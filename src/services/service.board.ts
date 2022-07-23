@@ -50,15 +50,15 @@ const list = async () => {
 const update = async (idx: string, data?: any) => {
     let response : Failable<Board|null,string>
     try{
-        const [result] = await Board.update(data,{
+        await Board.update(data,{
             where:{idx}
         })
-        const updatedOne = await Board.findOne({
-            where:{idx:result}
+        const result: Board|null = await Board.findOne({
+            where:{idx:idx}
         });
         response = {
             isError: false,
-            value: updatedOne
+            value: result
         }
     } catch (e: any){
         catchError(e)
@@ -67,6 +67,7 @@ const update = async (idx: string, data?: any) => {
             error: 'service update Error!'
         }
     }
+    return response;
 }
 
 const remove = async (idx: string) => {
@@ -86,6 +87,7 @@ const remove = async (idx: string) => {
             error: 'service delete Error!'
         }
     }
+    return response;
 }
 
 export default {
